@@ -289,7 +289,8 @@ class AdvPGAN(object):
             self.interpolates_reshaped = torch.reshape(self.interpolates,
                                            [self.batch_size, self.image_size, self.image_size, self.image_channel])
             _, self.results = self.naive_discriminator(self.interpolates_reshaped, reuse=True)
-            self.gradients = tf.gradients(self.results, [self.interpolates])[0]
+            self.gradients = gradients(self.results, [self.interpolates])[0]
+            #self.gradients = tf.gradients(self.results, [self.interpolates])[0]
             self.slopes = torch.sum(self.gradients ** 2, dim=[1]) ** 2
             tensor_penalty = (self.slopes - 1.) ** 2
             array_penalty = np.array(tensor_penalty)
@@ -311,6 +312,10 @@ class AdvPGAN(object):
 
             # initialize a saver
             self.saver = tf.train.Saver()
+
+#gradients
+    def gradients(y, x):
+        return [np.sum(np.array(y)/xi) for xi in x]
 
 # print list
     def print_each_list(self, list_name):
