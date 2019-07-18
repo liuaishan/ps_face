@@ -285,8 +285,9 @@ def TV(patch, patch_size, batch_size):
 	#unchecked
 	def single_image_TV(patch, patch_size):
 		result = numpy.zeros((1,patch_size - 1, 3))
-		result[1] = [x for x in range(1,patch_size)]
-		result[2] = [x for x in range(0,3)]
+		for i in range(1, patch_size):
+	        	for j in range(0, 3):
+        			result[0][i-1][j] = patch[0][i][j]
 		slice_result = torch.from_numpy(result)
 		for iter in range(1, patch_size - 1):
 				sub1 = patch[iter:iter + 1, 1:, 0: 3] + patch[iter:iter + 1, 0:-1, 0: 3]
